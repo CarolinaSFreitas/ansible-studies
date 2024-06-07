@@ -3,10 +3,14 @@ Repositório para minhas anotações de estudo do Ansible
 
 [Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html)
 
+Ansible is an agentless automation tool that you install on a single host (referred to as the control node).
+
+From the control node, Ansible can manage an entire fleet of machines and other devices (referred to as managed nodes) remotely with SSH, Powershell remoting, and numerous other transports, all from a simple command-line interface with no databases or daemons required.
+
 Ansible oferece várias vantagens significativas para a automação de TI. É uma ferramenta agentless, o que significa que não requer a instalação de software adicional nos servidores gerenciados, simplificando a configuração e manutenção. Utiliza uma linguagem de configuração baseada em YAML, tornando seus playbooks fáceis de escrever e entender. Ansible também é altamente escalável e permite a automação de tarefas repetitivas, configuração de sistemas, implantação de aplicativos e orquestração de serviços complexos de maneira eficiente e idempotente, garantindo que as ações sejam aplicadas somente quando necessário. Além disso, sua flexibilidade e integração com diversas tecnologias e plataformas o tornam uma escolha popular para profissionais de DevOps e administradores de sistemas.
 
 ## Instalação:
-CentOS: 
+CentOS/RH: 
 1. ``yum install epel-release`` 
 2. ``yum install ansible``
 
@@ -97,4 +101,6 @@ Atualizando o inventário 'servidores-distros' via CLI:
 
 ## Informações dos hosts:
 ``ansible servidores-distros -a "uptime"``
+
+## Ansible - EC2 
 
