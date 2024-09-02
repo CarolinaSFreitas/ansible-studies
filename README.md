@@ -16,7 +16,7 @@ CentOS/RH:
 
 tip: "ansible" no terminal traz o menu de ajuda do Ansible
 
-# Anotações:
+# Anotações - Ansible for the Absolute Beginner - KodeKloud:
 
 ## Componentes Essenciais do Ansible
 No "/etc/ansible/" encontram-se os arquivos:
@@ -102,5 +102,157 @@ Atualizando o inventário 'servidores-distros' via CLI:
 ## Informações dos hosts:
 ``ansible servidores-distros -a "uptime"``
 
-## Ansible - EC2 
+# Guia Rápido sobre Configuração e Inventário no Ansible
 
+## Arquivo de Configuração do Ansible
+
+Ao instalar o Ansible, um arquivo de configuração padrão é criado:
+
+```plaintext
+/etc/ansible/ansible.cfg
+```
+
+Esse arquivo contém duas principais seções:
+
+- `[defaults]` (seção padrão no topo)
+- Outras seções como `[inventory]`, `[privileges_escalation]`, `[paramiko_connection]`, `[ssh_connection]`, `[persistent_connection]` e `[colors]`
+
+### Seção `[defaults]`
+
+Contém opções principais, como:
+
+```plaintext
+inventory = /etc/ansible/hosts
+log_path = /var/log/ansible.log
+library = /usr/share/my_modules/
+roles_path = /etc/ansible/roles
+action_plugins = /usr/share/ansible/plugins/action
+gathering = implicit
+timeout = 10
+forks = 5
+```
+
+### Seção `[inventory]`
+
+Define plugins para o inventário, como:
+
+```plaintext
+enable_plugins = host_list, virtualbox, yaml, constructed
+```
+
+## Arquivos de Inventário
+
+Os arquivos de inventário especificam os sistemas-alvo e podem estar em formatos diferentes, como INI ou YAML.
+
+### Exemplo de Arquivo INI
+
+```plaintext
+[web]
+server1.company.com ansible_connection=ssh ansible_user=root
+server4.company.com ansible_connection=winrm
+
+[db]
+ansibleserver2.company.com ansible_connection=winrm ansible_user=admin
+
+[mail]
+server3.company.com ansible_connection=ssh ansible_ssh_pass=P@#
+
+[localhost]
+ansible_connection=localhost
+```
+
+### Exemplo de Arquivo YAML
+
+```yaml
+web:
+  hosts:
+    server1.company.com:
+      ansible_connection: ssh
+      ansible_user: root
+    server4.company.com:
+      ansible_connection: winrm
+
+db:
+  hosts:
+    ansibleserver2.company.com:
+      ansible_connection: winrm
+      ansible_user: admin
+
+mail:
+  hosts:
+    server3.company.com:
+      ansible_connection: ssh
+      ansible_ssh_pass: P@#
+
+localhost:
+  hosts:
+    localhost:
+      ansible_connection: localhost
+```
+
+## Agrupamento e Relações Pai e Filho
+
+### Agrupamento
+
+Facilita a atualização de servidores por categoria, como departamento ou localização.
+
+### Relações Pai e Filho
+
+Permite definir configurações específicas para grupos e subgrupos de servidores.
+
+```plaintext
+[web]
+server1
+server2
+
+[web:children]
+server3
+```
+
+## Variáveis
+
+Variáveis são usadas para armazenar informações dinâmicas.
+
+### Tipos de Variáveis
+
+- **String Variables**: Sequências de caracteres.
+- **Number Variables**: Números inteiros e de ponto flutuante.
+- **Boolean Variables**: Valores verdadeiro ou falso.
+- **List Variables**: Sequências ordenadas de valores.
+- **Dictionary Variables**: Pares chave-valor.
+
+### Definindo e Usando Variáveis
+
+- **Playbooks**: Variáveis podem ser definidas diretamente em playbooks ou arquivos separados.
+- **Variáveis de Registro**: Usadas para armazenar resultados de comandos e tarefas.
+
+```yaml
+- name: Example Task
+  command: /bin/echo "Hello World"
+  register: result
+```
+
+### Escopo de Variáveis
+
+- **Host Scope**: Variáveis definidas para um host específico.
+- **Play Scope**: Variáveis definidas apenas para uma play específica.
+- **Global Scope**: Variáveis acessíveis em qualquer lugar do playbook, como via CLI.
+
+## Variáveis Mágicas
+
+São variáveis especiais que fornecem informações sobre o ambiente ou hosts.
+
+- **`hostvars`**: Acessa variáveis de outros hosts.
+- **`groups`**: Retorna todos os hosts de um grupo.
+- **`group_names`**: Retorna os nomes dos grupos aos quais o host pertence.
+- **`inventory_hostname`**: Nome do host conforme definido no arquivo de inventário.
+
+### Exemplo de Uso
+
+```yaml
+- name: Print DNS of web2
+  debug:
+    msg: "{{ hostvars['web2']['ansible_host'] }}"
+```
+
+Para mais informações, consulte a [documentação oficial do Ansible](https://docs.ansible.com/ansible/latest/index.html).
