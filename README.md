@@ -334,3 +334,7 @@ Conclusão
 ansible_facts fornecem uma visão detalhada do sistema gerenciado e podem ser muito úteis para criar playbooks dinâmicos e adaptáveis. A coleta automática de fatos ajuda a personalizar e otimizar suas configurações e tarefas.
 
 Para mais detalhes, consulte a documentação oficial do Ansible sobre Gathering Facts.
+
+### Anotações - lab:
+
+``ansible-playbook -i inventory playbook.yaml`` - roda o Playbook
