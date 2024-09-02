@@ -256,3 +256,81 @@ São variáveis especiais que fornecem informações sobre o ambiente ou hosts.
 ```
 
 Para mais informações, consulte a [documentação oficial do Ansible](https://docs.ansible.com/ansible/latest/index.html).
+
+# Entendendo `ansible_facts` no Ansible
+
+## O que são `ansible_facts`?
+
+`ansible_facts` são um conjunto de informações coletadas automaticamente pelo Ansible sobre o sistema gerenciado. Essas informações incluem detalhes sobre a configuração do sistema, hardware, rede, e muito mais.
+
+## Como os `ansible_facts` São Coletados?
+
+Durante a execução de um playbook, o Ansible coleta essas informações como parte do processo de **gathering facts**. O gathering facts é a tarefa que reúne dados sobre o sistema antes de executar outras tarefas.
+
+## Exemplo de Uso
+
+### Playbook com Gathering Facts Ativado
+
+````
+- name: Print hello message
+  hosts: all
+  tasks:
+    - debug:
+        msg: "{{ ansible_facts }}"
+````
+
+### Saída Exemplo:
+````
+ok: [web1] => {
+  "ansible_facts": {
+    "all_ipv4_addresses": ["172.20.1.100"],
+    "architecture": "x86_64",
+    "date_time": {"date": "2019-09-07"},
+    "distribution": "Ubuntu",
+    "fqdn": "web1",
+    "hostname": "web1",
+    "interfaces": ["lo", "eth0"],
+    "machine": "x86_64",
+    "memfree_mb": 72,
+    "memory_mb": {"real": {"free": 72, "total": 985, "used": 913}},
+    "memtotal_mb": 985,
+    "processor": ["0", "GenuineIntel", "Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz"],
+    "product_name": "VirtualBox",
+    "product_serial": "0",
+    "product_uuid": "18A31B5D-FAC9-445F-9B6F-95B4B587F485"
+  }
+}
+````
+### Desativando Gathering Facts
+Você pode desativar o gathering facts se não precisar dessas informações, usando:
+
+````
+- name: Print hello message
+  hosts: all
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "{{ ansible_facts }}"
+````
+      
+Saída Exemplo com Gathering Facts Desativado:
+
+````
+ok: [web1] => {
+  "ansible_facts": {}
+}
+````
+Configuração de Gathering Facts
+A configuração do comportamento de gathering facts pode ser ajustada no arquivo de configuração do Ansible (ansible.cfg):
+
+````
+[defaults]
+gathering = implicit
+````
+
+implicit: Fatos são coletados por padrão.
+explicit: Fatos não são coletados por padrão; deve-se definir gather_facts: True para coletá-los.
+Conclusão
+ansible_facts fornecem uma visão detalhada do sistema gerenciado e podem ser muito úteis para criar playbooks dinâmicos e adaptáveis. A coleta automática de fatos ajuda a personalizar e otimizar suas configurações e tarefas.
+
+Para mais detalhes, consulte a documentação oficial do Ansible sobre Gathering Facts.
