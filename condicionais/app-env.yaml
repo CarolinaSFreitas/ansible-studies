@@ -1,0 +1,6 @@
+- name: Deploy configuration files
+  template:
+    src: "{{ app_env }}_config.j2"
+    dest: "/etc/myapp/config.conf"
+  vars:
+    app_env: production

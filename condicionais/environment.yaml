@@ -1,0 +1,15 @@
+- name: Install required packages
+  apt:
+    name:
+      - package1
+      - package2
+    state: present
+
+- name: Create necessary directories and set permissions
+  #... 
+
+- name: Start web application service
+  service:
+    name: myapp
+    state: started
+  when: environment == 'production'
