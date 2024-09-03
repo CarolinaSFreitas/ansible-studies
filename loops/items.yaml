@@ -1,0 +1,21 @@
+-
+- name: Create users
+  hosts: localhost
+  tasks:
+    - name: Ensure user is present
+      user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - joe
+        - george
+        - ravi
+        - mani
+        - kiran
+        - jazlan
+        - emaan
+        - mazin
+        - izaan
+        - mike
+        - menaal
+        - shoeb

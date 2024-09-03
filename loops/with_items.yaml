@@ -1,0 +1,13 @@
+---
+- name: Create users
+  hosts: localhost
+  tasks:
+    - name: Ensure users are present
+      user:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - joe
+        - george
+        - ravi
+        - mani

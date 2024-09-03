@@ -1,0 +1,23 @@
+-
+- name: Create users with specific UIDs
+  hosts: localhost
+  tasks:
+    - name: Ensure users are present with specific UIDs
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        state: present
+      loop:
+        - { name: joe, uid: 1010 }
+        - { name: george, uid: 1011 }
+        - { name: ravi, uid: 1012 }
+        - { name: mani, uid: 1013 }
+        - { name: kiran, uid: 1014 }
+        - { name: jazlan, uid: 1015 }
+        - { name: emaan, uid: 1016 }
+        - { name: mazin, uid: 1017 }
+        - { name: izaan, uid: 1018 }
+        - { name: mike, uid: 1019 }
+        - { name: menaal, uid: 1020 }
+        - { name: shoeb, uid: 1021 }
+        - { name: rani, uid: 1022 }
